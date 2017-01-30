@@ -43,26 +43,15 @@ void setup() {
   // so you have to close this one before opening another.
   myFile = SD.open("test.txt", FILE_WRITE);
 
-  // if the file opened okay, write to it:
-  if (myFile) {
-    Serial.print("Writing to test.txt...");
-    myFile.println("testing 1, 2, 3.");
-    // close the file:
-    myFile.close();
-    Serial.println("done.");
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
-
+  
   // re-open the file for reading:
-  myFile = SD.open("test.txt");
+  myFile = SD.open("IMU_Data.txt");
   if (myFile) {
-    Serial.println("test.txt:");
+    Serial.println("IMU_Data.txt:");
 
     // read from the file until there's nothing else in it:
     while (myFile.available()) {
-      Serial.write(myFile.read());
+      Serial.println(myFile.read());
     }
     // close the file:
     myFile.close();
