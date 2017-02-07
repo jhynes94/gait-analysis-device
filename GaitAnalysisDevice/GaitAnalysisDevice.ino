@@ -9,6 +9,7 @@
 
 //Setup SD Card
 File myFile;
+const int chipSelect = 4;
 
 //Setup Internal Clock
 unsigned long time;
@@ -113,7 +114,6 @@ void initializeSDCard(void){
 
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
-  myFile = SD.open("IMU_Data.txt", FILE_WRITE);
 }
 
 void setup(void)
@@ -129,16 +129,20 @@ void setup(void)
 void loop(void)
 {
 
+  
+  myFile = SD.open("IMU_Data.csv", FILE_WRITE);
+  //myFile.println("Testing");
   // if the file opened okay, write to it:
   if (myFile) {
     Serial.println("Writing");
     sensors_event_t event;
     accel.getEvent(&event);
-    myFile.print(millis()); myFile.print(event.acceleration.x + event.acceleration.y + event.acceleration.z); myFile.print("\n");
+    myFile.print(millis());  myFile.print(", "); myFile.println(event.acceleration.x + event.acceleration.y + event.acceleration.z);
   } else {
     // if the file didn't open, print an error:
     Serial.println("error opening file");
   }
+  myFile.close();
 
 /*
   //RTC Data
@@ -160,5 +164,4 @@ void loop(void)
   Serial.print("   Acceletation Sum: "); Serial.print(event.acceleration.x + event.acceleration.y + event.acceleration.z); Serial.print("\n");
   Serial.println(F(""));
   */
-  delay(200);
 }
