@@ -130,6 +130,9 @@ void loop(void)
 {
 
   
+
+  /*
+  //Write to SD Card
   myFile = SD.open("IMU_Data.csv", FILE_WRITE);
   //myFile.println("Testing");
   // if the file opened okay, write to it:
@@ -143,8 +146,9 @@ void loop(void)
     Serial.println("error opening file");
   }
   myFile.close();
+  */
 
-/*
+  /*
   //RTC Data
   DateTime now = rtc.now();
   Serial.print(now.hour(), DEC);
@@ -152,16 +156,21 @@ void loop(void)
   Serial.print(now.minute(), DEC);
   Serial.print(':');
   Serial.print(now.second(), DEC);
+  */
 
+  /*
   //Internal Time
   time = millis();
   //prints time since program started
   Serial.println(time);
+  */
   
   //Get a new sensor event
   sensors_event_t event;
   accel.getEvent(&event);
-  Serial.print("   Acceletation Sum: "); Serial.print(event.acceleration.x + event.acceleration.y + event.acceleration.z); Serial.print("\n");
-  Serial.println(F(""));
-  */
+  /*Serial.print(event.acceleration.x);
+  Serial.print(",");
+  Serial.print(event.acceleration.y);
+  Serial.print(",");*/
+  Serial.println(event.acceleration.z);
 }
