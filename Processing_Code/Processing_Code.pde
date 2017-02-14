@@ -2,12 +2,16 @@ import processing.serial.*;
 
 Serial myPort;        // The serial port
 int xPos = 1;         // horizontal position of the graph
-float inByte = 0;
-int lastHeight = 0;
+int inBytex = 0;
+int inBytey = 0;
+int inBytez = 0;
+int lastHeightx = 0;
+int lastHeighty = 0;
+int lastHeightz = 0;
 
 void setup () {
   // set the window size:
-  size(400, 300);
+  size(1300, 500);
 
   // List all the available serial ports
   // if using Processing 2.1 or later, use Serial.printArray()
@@ -26,10 +30,19 @@ void setup () {
 }
 void draw () {
   // draw the line:
-  stroke(127, 34, 255);
-  //strokeWeight(4);        //stroke wider
-  line(xPos, lastHeight, xPos, inByte);
-  lastHeight = (int)inByte;
+  stroke(0, 255, 255);
+  line(xPos, lastHeightx, xPos, inBytex);
+  lastHeightx = (int)inBytex;
+  
+  // draw the line:
+  stroke(255, 255, 0);
+  line(xPos, lastHeighty, xPos, inBytey);
+  lastHeighty = (int)inBytey;
+  
+  // draw the line:
+  stroke(255, 0, 255);
+  line(xPos, lastHeightz, xPos, inBytez);
+  lastHeightz = (int)inBytez;
 
   // at the edge of the screen, go back to the beginning:
   if (xPos >= width) {
@@ -52,14 +65,37 @@ void drawGyro(int x, int y, int z){
 
 void serialEvent (Serial myPort) {
   // get the ASCII string:
-  String inString = myPort.readStringUntil('\n');
-
-  if (inString != null) {
+  String inStringx = myPort.readStringUntil(',');
+  String inStringy = myPort.readStringUntil(',');
+  String inStringz = myPort.readStringUntil('\n');
+  
+  if (inStringx != null) {
     // trim off any whitespace:
-    inString = trim(inString);
-    // convert to an int and map to the screen height:
-    inByte = float(inString);
-    println(inByte);
-    inByte = map(inByte, 0, 50, 0, height);
+    inStringx = trim(inStringx);
+    
+    inBytex = (int)((height/2) + 10*(int(inStringx)));
+    
+    print("X: ");
+    println(inBytex);
+  }
+
+  if (inStringy != null) {
+    // trim off any whitespace:
+    inStringy = trim(inStringy);
+    
+    inBytey = (int)((height/2) + 10*(int(inStringy)));
+    
+    print("Y: ");
+    println(inBytey);
+  }
+  
+  if (inStringz != null) {
+    // trim off any whitespace:
+    inStringz = trim(inStringz);
+    
+    inBytez = (int)((height/2) + 10*(int(inStringz)));
+    
+    print("Z: ");
+    println(inBytez);
   }
 }
