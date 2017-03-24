@@ -6,6 +6,9 @@
 #include "RTClib.h"
 #include <SPI.h>
 #include <SD.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
 
 //Setup SD Card
 File myFile;
@@ -22,6 +25,11 @@ char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 Adafruit_L3GD20_Unified       gyro  = Adafruit_L3GD20_Unified(20);
+
+//Setup NRF24L01 Wireless
+RF24 radio(8, 10);
+const byte rxAddr[6] = "00001";
+
 
 void displaySensorDetails(void)
 {
@@ -116,6 +124,14 @@ void initializeSDCard(void){
   // so you have to close this one before opening another.
 }
 
+void initializeWireless(void){
+  radio.begin();
+  radio.setRetries(15, 15);
+  radio.openWritingPipe(rxAddr);
+  radio.stopListening();
+  radio.setPALevel(RF24_PA_MIN);
+}
+
 void setup(void)
 {
   Serial.begin(9600);
@@ -124,6 +140,7 @@ void setup(void)
   initializeIMU();
   initializeRTC();
   initializeSDCard();
+  initializeWireless();
 }
 
 void loop(void)
@@ -175,4 +192,13 @@ void loop(void)
   Serial.print(event.acceleration.y);
   Serial.print(",");
   Serial.println(event.acceleration.z);
+
+  
+  
+  //Send data through Wireless
+  const char text[] = "Hello World";
+  radio.write(&text, sizeof(text));
+  Serial.println("Sending");
+  delay(1000);
+  
 }
