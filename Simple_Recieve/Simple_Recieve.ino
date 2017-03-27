@@ -16,7 +16,7 @@ void setup()
   
   radio.startListening();
 
-  pinMode(4, OUTPUT);
+    pinMode(4, OUTPUT);
   digitalWrite(4, HIGH);
 }
 

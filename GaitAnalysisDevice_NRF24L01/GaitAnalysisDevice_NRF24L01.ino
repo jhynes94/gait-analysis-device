@@ -25,6 +25,9 @@ char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 Adafruit_L3GD20_Unified       gyro  = Adafruit_L3GD20_Unified(20);
+float accX = 0;
+float accY = 0;
+float accZ = 0;
 
 //Setup NRF24L01 Wireless
 RF24 radio(8, 10);
@@ -134,7 +137,7 @@ void initializeWireless(void){
 
 void setup(void)
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println(F("Gait Analysis Device")); Serial.println("");
 
   initializeIMU();
@@ -146,7 +149,18 @@ void setup(void)
 void loop(void)
 {
 
-  
+  //Get a new sensor event
+  sensors_event_t event;
+  accel.getEvent(&event);
+  accX = event.acceleration.x;
+  accY = event.acceleration.y;
+  accZ = event.acceleration.z;
+  Serial.print(accX);
+  Serial.print(",");
+  Serial.print(accY);
+  Serial.print(",");
+  Serial.println(accZ);
+
 
   /*
   //Write to SD Card
@@ -181,24 +195,22 @@ void loop(void)
   //prints time since program started
   Serial.println(time);*/
   
-
-
-  
-  //Get a new sensor event
-  sensors_event_t event;
-  accel.getEvent(&event);
-  Serial.print(event.acceleration.x);
-  Serial.print(",");
-  Serial.print(event.acceleration.y);
-  Serial.print(",");
-  Serial.println(event.acceleration.z);
-
-  
   
   //Send data through Wireless
-  const char text[] = "Hello World";
+  String stringOne = "";
+  stringOne += accX;
+  stringOne += ",";
+  stringOne += accY;
+  stringOne += ",";
+  stringOne += accZ;
+
+  char text[stringOne.length()];
+  stringOne.toCharArray(text, stringOne.length());
+  
   radio.write(&text, sizeof(text));
-  Serial.println("Sending");
-  delay(1000);
+  //Serial.println("Sending");
+
+  
+  //delay(100);
   
 }
