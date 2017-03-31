@@ -27,8 +27,20 @@ void setup () {
 
   // set inital background:
   background(0);
+  
+  // draw Time Axis
+  stroke(0, 100, 255);
+  line(0, 250, 1300, 250);
 }
 void draw () {
+  // draw Key:
+  fill(0, 255, 255);
+  text("X acceleration" , 1210, 20);
+  fill(255, 255, 0);
+  text("Y acceleration" , 1210, 40);
+  fill(255, 0, 255);
+  text("Z acceleration" , 1210, 60);
+  
   // draw the line:
   stroke(0, 255, 255);
   line(xPos, lastHeightx, xPos, inBytex);
@@ -48,6 +60,9 @@ void draw () {
   if (xPos >= width) {
     xPos = 0;
     background(0);
+    // draw Time Axis
+    stroke(0, 100, 255);
+    line(0, 250, 1300, 250);
   } else {
     // increment the horizontal position:
     xPos++;
