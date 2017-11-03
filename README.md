@@ -1,6 +1,6 @@
 # Gait Analysis Device
 
-This is a basic DSP platform
+This project is for Northeastern Universities ["Augmented Cognition Labratory"](http://www.northeastern.edu/ostadabbas/)
 
 ## Purpose
 
@@ -11,6 +11,7 @@ To determine the gait of user and save this data. Thus showing if our "AR4PD" id
 * Program assembled transmitter
 * Program Reciever
 * Connect reciever to computer and open "Processing application" to begin collecting IMU data from transmitter
+* Ask Justin for help because this is not 100% streamlined
 
 ## License
 
